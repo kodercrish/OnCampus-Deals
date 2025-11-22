@@ -1,13 +1,13 @@
-package com.example.Search;
+package com.example.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SearchApplication {
+public class AdminApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SearchApplication.class, args);
+		SpringApplication.run(AdminApplication.class, args);
 	}
 
 }
