@@ -1,79 +1,82 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, TextInput, Alert } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
 import { useLoginMutation } from '../../api/authApi';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../store/authSlice';
+import { Button } from '../../components/common/Button';
+import { Text } from '../../components/common/Text';
 
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthStackParamList } from '../../navigation/types';
-
-type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
-
-export default function LoginScreen({ navigation }: Props) {
-  const dispatch = useDispatch();
+export const LoginScreen = ({ navigation }: any) => {
+  const { control, handleSubmit } = useForm();
   const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  async function handleLogin() {
-    if (!email || !password) {
-      return Alert.alert('Error', 'Please fill all fields');
-    }
-
+  const onSubmit = async (data: any) => {
     try {
-      const res = await login({ email, password }).unwrap();
-
-      if (res.token && res.userId) {
-        dispatch(setCredentials({ token: res.token, userId: res.userId }));
+      const response = await login(data).unwrap();
+      if (response.token && response.userId) {
+        dispatch(setCredentials({ 
+          token: response.token, 
+          userId: response.userId,
+          role: response.role 
+        }));
       }
     } catch (err: any) {
-      Alert.alert('Login failed', err?.data?.message ?? 'Something went wrong');
+      Alert.alert('Login Failed', 'Invalid credentials');
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-
-      <TextInput
-        placeholder="Email"
-        style={styles.input}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
+      <Text variant="h1" style={styles.title}>OnCampus Deals</Text>
+      
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="College Email"
+            onChangeText={onChange}
+            value={value}
+            autoCapitalize="none"
+          />
+        )}
       />
 
-      <TextInput
-        placeholder="Password"
-        style={styles.input}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
 
-      <Button
-        title={isLoading ? 'Logging in...' : 'Login'}
-        onPress={handleLogin}
+      <Button title="Login" onPress={handleSubmit(onSubmit)} loading={isLoading} />
+      <Button 
+        title="Create Account" 
+        onPress={() => navigation.navigate('Signup')} 
+        color="gray" 
       />
-
-      <Text style={styles.link} onPress={() => navigation.navigate('Signup')}>
-        Don’t have an account? Signup
-      </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: { padding: 20, marginTop: 80 },
-  title: { fontSize: 28, marginBottom: 20, fontWeight: 'bold' },
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  title: { textAlign: 'center', marginBottom: 30 },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 12,
-    padding: 12,
-    borderRadius: 6,
+    borderColor: '#ddd',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 15,
   },
-  link: { marginTop: 20, color: '#007bff', textAlign: 'center' },
 });

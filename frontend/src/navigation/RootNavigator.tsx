@@ -1,41 +1,48 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { restoreSession } from '../store/authSlice';
-import AuthNavigator from './AuthNavigator';
-// TODO: replace with AppNavigator when home is implemented
-import AppNavigator from './AuthNavigator';
+import { AuthNavigator } from './AuthNavigator';
+import { TabNavigator } from './TabNavigation';
+import { ListingDetailsScreen } from '../screens/Listing/ListingDetailsScreen';
+import { ChatScreen } from '../screens/Chat/ChatScreen';
+import { CreateListingScreen } from '../screens/Listing/CreateListingScreen';
 
-export default function RootNavigator() {
-  const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state.auth.token);
-  const [loading, setLoading] = useState(true);
+const Stack = createNativeStackNavigator();
 
-  useEffect(() => {
-    async function loadData() {
-      const storedToken = await AsyncStorage.getItem('token');
-      const storedUserId = await AsyncStorage.getItem('userId');
-
-      dispatch(
-        restoreSession({
-          token: storedToken,
-          userId: storedUserId,
-        })
-      );
-
-      setLoading(false);
-    }
-
-    loadData();
-  }, []);
-
-  if (loading) return null; // or splash screen
+export const RootNavigator = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
     <NavigationContainer>
-      {token ? <AppNavigator /> : <AuthNavigator />}
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!isAuthenticated ? (
+          <Stack.Screen name="Auth" component={AuthNavigator} />
+        ) : (
+          <>
+            <Stack.Screen name="Main" component={TabNavigator} />
+            <Stack.Screen 
+              name="ListingDetails" 
+              component={ListingDetailsScreen} 
+              options={{ headerShown: true, title: 'Details' }}
+            />
+            <Stack.Screen 
+              name="ChatScreen" 
+              component={ChatScreen} 
+              options={({ route }: any) => ({ 
+                headerShown: true, 
+                title: route.params.otherUserName 
+              })}
+            />
+            <Stack.Screen 
+              name="CreateListing" 
+              component={CreateListingScreen} 
+              options={{ headerShown: true, title: 'Sell Item' }}
+            />
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
