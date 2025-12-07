@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ListingServices {
     private final CloudinaryService cloudinaryService;
 
     /** Create listing + upload images */
+    @Transactional
     public String createListingWithImages(CreateListingRequest req, List<MultipartFile> images) {
 
         Listings listing = new Listings();
@@ -31,21 +33,25 @@ public class ListingServices {
         listing.setPrice(req.getPrice());
         listing.setCategory(req.getCategory());
         listing.setSellerId(req.getSellerId());
+        listing.setCreatedAt(LocalDateTime.now());
+        listing.setStatus(Listings.Status.ACTIVE);
 
         listingsRepository.save(listing);
 
-        // Upload images
-        List<String> urls = new ArrayList<>();
-        for (MultipartFile img : images) {
-            urls.add(cloudinaryService.uploadImage(img));
-        }
+        if (images != null && !images.isEmpty()) {
+            List<String> urls = new ArrayList<>();
+            for (MultipartFile img : images) {
+                // skip empty parts
+                if (img == null || img.isEmpty()) continue;
+                urls.add(cloudinaryService.uploadImage(img));
+            }
 
-        // Save URLs in DB
-        for (String url : urls) {
-            ListingImages li = new ListingImages();
-            li.setListing(listing);
-            li.setImageUrl(url);
-            listingImageServices.saveImage(li);
+            for (String url : urls) {
+                ListingImages li = new ListingImages();
+                li.setListing(listing);
+                li.setImageUrl(url);
+                listingImageServices.saveImage(li);
+            }
         }
 
         return listing.getId();

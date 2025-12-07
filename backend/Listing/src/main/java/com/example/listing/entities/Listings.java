@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "listings")
@@ -40,6 +41,7 @@ public class Listings {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ListingImages> images = new ArrayList<>();
 
     public enum Status {

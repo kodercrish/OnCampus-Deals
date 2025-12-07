@@ -1,0 +1,80 @@
+Starting a Gradle Daemon, 13 busy and 20 stopped Daemons could not be reused, use --status for details
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :resolveMainClassName UP-TO-DATE
+
+> Task :bootRun
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.7)
+
+2025-12-07T19:06:49.645+05:30  INFO 452635 --- [listing-service] [           main] com.example.listing.ListingApplication   : Starting ListingApplication using Java 21.0.9 with PID 452635 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Listing/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Listing)
+2025-12-07T19:06:49.648+05:30  INFO 452635 --- [listing-service] [           main] com.example.listing.ListingApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T19:06:50.290+05:30  INFO 452635 --- [listing-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-07T19:06:50.349+05:30  INFO 452635 --- [listing-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 2 JPA repository interfaces.
+2025-12-07T19:06:50.899+05:30  INFO 452635 --- [listing-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2025-12-07T19:06:50.915+05:30  INFO 452635 --- [listing-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-07T19:06:50.915+05:30  INFO 452635 --- [listing-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-07T19:06:50.968+05:30  INFO 452635 --- [listing-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-07T19:06:50.969+05:30  INFO 452635 --- [listing-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1284 ms
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+2025-12-07T19:06:51.086+05:30  INFO 452635 --- [listing-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-07T19:06:51.121+05:30  INFO 452635 --- [listing-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-07T19:06:51.152+05:30  INFO 452635 --- [listing-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-07T19:06:51.383+05:30  INFO 452635 --- [listing-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-07T19:06:51.408+05:30  INFO 452635 --- [listing-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-07T19:06:51.530+05:30  INFO 452635 --- [listing-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@36d697ab
+2025-12-07T19:06:51.532+05:30  INFO 452635 --- [listing-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-07T19:06:51.565+05:30  WARN 452635 --- [listing-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-07T19:06:51.566+05:30  WARN 452635 --- [listing-service] [           main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-12-07T19:06:51.581+05:30  INFO 452635 --- [listing-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-07T19:06:52.207+05:30  INFO 452635 --- [listing-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table listings 
+       modify column status enum ('ACTIVE','SOLD','UNAVAILABLE') not null
+2025-12-07T19:06:52.290+05:30  INFO 452635 --- [listing-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T19:06:52.550+05:30  WARN 452635 --- [listing-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-07T19:06:52.754+05:30  INFO 452635 --- [listing-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2025-12-07T19:06:52.759+05:30  INFO 452635 --- [listing-service] [           main] com.example.listing.ListingApplication   : Started ListingApplication in 3.565 seconds (process running for 3.831)
+2025-12-07T19:07:00.340+05:30  INFO 452635 --- [listing-service] [nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-07T19:07:00.340+05:30  INFO 452635 --- [listing-service] [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-07T19:07:00.341+05:30  INFO 452635 --- [listing-service] [nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: 
+    select
+        l1_0.id,
+        l1_0.category,
+        l1_0.created_at,
+        l1_0.description,
+        l1_0.price,
+        l1_0.seller_id,
+        l1_0.status,
+        l1_0.title,
+        l1_0.updated_at 
+    from
+        listings l1_0 
+    where
+        l1_0.status=?
+Hibernate: 
+    select
+        i1_0.listing_id,
+        i1_0.id,
+        i1_0.image_url 
+    from
+        listing_images i1_0 
+    where
+        i1_0.listing_id=?

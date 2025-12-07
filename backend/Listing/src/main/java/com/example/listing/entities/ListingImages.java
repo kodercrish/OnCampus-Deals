@@ -3,6 +3,7 @@ package com.example.listing.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "listing_images")
@@ -14,6 +15,7 @@ public class ListingImages {
 
     @ManyToOne
     @JoinColumn(name = "listing_id", nullable = false)
+    @JsonBackReference
     private Listings listing;
 
     @Column(name = "image_url", nullable = false, columnDefinition = "TEXT")

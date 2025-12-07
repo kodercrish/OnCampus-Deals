@@ -1,82 +1,74 @@
+// src/screens/Listing/ListingDetailsScreen.tsx
 import React from 'react';
-import { View, ScrollView, Image, StyleSheet, Alert } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { 
-  useGetListingDetailsQuery, 
-  useMarkSoldMutation, 
-  useMarkUnavailableMutation,
-  useDeleteListingMutation 
-} from '../../api/listingApi';
-import { useCreateChatMutation } from '../../api/chatApi';
-import { Button } from '../../components/common/Button';
+import {
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import { Text } from '../../components/common/Text';
+import { Button } from '../../components/common/Button';
+import { useGetListingDetailsQuery } from '../../api/listingApi';
+import { useFetchUserQuery } from '../../api/userApi';
+
+const { width: SCREEN_W } = Dimensions.get('window');
 
 export const ListingDetailsScreen = ({ route, navigation }: any) => {
   const { listingId } = route.params;
-  const { userId, role } = useSelector((state: RootState) => state.auth);
-  
   const { data, isLoading } = useGetListingDetailsQuery({ listingId });
-  const [markSold] = useMarkSoldMutation();
-  const [deleteListing] = useDeleteListingMutation();
-  const [createChat] = useCreateChatMutation();
+  const listing = data?.listing ?? null;
+  const images = data?.images ?? listing?.images ?? [];
 
-  if (isLoading || !data?.listing) return <Text>Loading...</Text>;
+  const sellerId = listing?.sellerId ?? null;
+  const { data: sellerData } = useFetchUserQuery({ userId: sellerId }, { skip: !sellerId });
 
-  const { listing, images } = data;
-  const isOwner = listing.sellerId === userId;
-  const isAdmin = role === 'admin';
+  if (isLoading || !listing) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
-  const handleContact = async () => {
-    try {
-      const res = await createChat({ listingId, sellerId: listing.sellerId }).unwrap();
-      navigation.navigate('ChatScreen', { 
-        chatId: res.chatId, 
-        otherUserName: listing.sellerName || 'Seller' 
-      });
-    } catch (e) {
-      Alert.alert('Error', 'Could not start chat');
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteListing({ listingId }).unwrap();
-      navigation.goBack();
-    } catch (e) { Alert.alert('Error', 'Delete failed'); }
-  };
+  const seller = sellerData?.user ?? null;
 
   return (
     <ScrollView style={styles.container}>
-      <ScrollView horizontal pagingEnabled style={{ height: 250 }}>
-        {images?.map((img: any, i: number) => (
-          <Image key={i} source={{ uri: img.url }} style={styles.image} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={images.length ? images : [{ placeholder: true }]}
+        horizontal
+        pagingEnabled
+        keyExtractor={(it: any, idx) => it.id ?? String(idx)}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item.imageUrl ?? item.image_url ?? item.url ?? '' }} style={styles.image} />
+        )}
+        showsHorizontalScrollIndicator={false}
+      />
 
-      <View style={styles.details}>
-        <Text variant="h1">{listing.title}</Text>
-        <Text variant="h2" style={styles.price}>${listing.price}</Text>
-        <Text variant="body" style={styles.desc}>{listing.description}</Text>
-        <Text variant="caption">Seller: {listing.sellerName || 'Unknown'}</Text>
+      <View style={styles.body}>
+        <Text variant="h2" style={styles.title}>{listing.title}</Text>
+        <Text variant="h1" style={styles.price}>₹{Number(listing.price).toFixed(2)}</Text>
 
-        <View style={styles.actions}>
-          {!isOwner && (
-            <Button title="Contact Seller" onPress={handleContact} />
-          )}
+        <Text variant="h3" style={{ marginTop: 12 }}>Description</Text>
+        <Text style={styles.description}>{listing.description}</Text>
 
-          {(isOwner || isAdmin) && (
-            <>
-              <Button title="Delete" onPress={handleDelete} color="red" />
-              {isOwner && listing.status === 'AVAILABLE' && (
-                <Button 
-                  title="Mark Sold" 
-                  onPress={() => markSold({ listingId })} 
-                  color="green" 
-                />
-              )}
-            </>
-          )}
+        <View style={styles.sellerBox}>
+          <Text variant="h3">Seller</Text>
+          <Text style={styles.sellerName}>{seller?.name ?? 'Unknown'}</Text>
+          <Text style={styles.sellerMeta}>{seller?.email ?? seller?.contact ?? ''}</Text>
+
+          <Button
+            title="Chat with Seller"
+            onPress={() =>
+              navigation.navigate('ChatScreen', {
+                chatId: `${sellerId}-${listing.id}`,
+                otherUserName: seller?.name ?? 'Seller',
+              })
+            }
+          />
         </View>
       </View>
     </ScrollView>
@@ -84,10 +76,14 @@ export const ListingDetailsScreen = ({ route, navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFF' },
-  image: { width: 400, height: 250, resizeMode: 'cover' },
-  details: { padding: 20 },
-  price: { color: '#2ecc71', marginVertical: 10 },
-  desc: { marginBottom: 20 },
-  actions: { marginTop: 20 },
+  container: { flex: 1 },
+  image: { width: SCREEN_W, height: SCREEN_W * 0.75, backgroundColor: '#eee' },
+  body: { padding: 16 },
+  title: { fontSize: 22, fontWeight: '700' },
+  price: { fontSize: 20, color: '#2ecc71', marginTop: 6 },
+  description: { marginTop: 8, color: '#444', fontSize: 15 },
+  sellerBox: { marginTop: 16, padding: 12, backgroundColor: '#fafafa', borderRadius: 8 },
+  sellerName: { fontSize: 16, fontWeight: '600', marginTop: 6 },
+  sellerMeta: { color: '#666', marginBottom: 10 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });

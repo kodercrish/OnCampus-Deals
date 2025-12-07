@@ -1,12 +1,12 @@
+// src/store/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { saveString, remove } from '../utils/storage';
 
-interface AuthState {
+type AuthState = {
   token: string | null;
   userId: string | null;
-  role: string | null;
+  role?: string | null;
   isAuthenticated: boolean;
-}
+};
 
 const initialState: AuthState = {
   token: null,
@@ -25,21 +25,24 @@ const authSlice = createSlice({
     ) => {
       state.token = action.payload.token;
       state.userId = action.payload.userId;
-      state.role = action.payload.role || 'student';
+      state.role = action.payload.role ?? null;
       state.isAuthenticated = true;
-      saveString('token', action.payload.token);
-      saveString('userId', action.payload.userId);
     },
     logout: (state) => {
       state.token = null;
       state.userId = null;
       state.role = null;
       state.isAuthenticated = false;
-      remove('token');
-      remove('userId');
+    },
+    // optional: hydrate from persisted token
+    setAuthFromStorage: (state, action: PayloadAction<{ token: string; userId: string; role?: string }>) => {
+      state.token = action.payload.token;
+      state.userId = action.payload.userId;
+      state.role = action.payload.role ?? null;
+      state.isAuthenticated = !!action.payload.token;
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setAuthFromStorage } = authSlice.actions;
 export default authSlice.reducer;

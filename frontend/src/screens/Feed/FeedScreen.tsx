@@ -1,40 +1,84 @@
-import React from 'react';
-import { View, FlatList, RefreshControl, StyleSheet } from 'react-native';
+// src/screens/Feed/FeedScreen.tsx
+import React, { useMemo } from 'react';
+import {
+  View,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import { useGetFeedQuery } from '../../api/listingApi';
 import { ListingCard } from '../../components/listing/ListingCard';
 import { Button } from '../../components/common/Button';
+import { Text } from '../../components/common/Text';
 
 export const FeedScreen = ({ navigation }: any) => {
-  const { data, isLoading, refetch } = useGetFeedQuery();
+  const { data, isLoading, refetch, error } = useGetFeedQuery();
+
+  const listings: any[] = useMemo(() => {
+    if (!data) return [];
+    // server returns { listings: Listing[] } or maybe { data: { listings: [...] } }
+    let maybe: any = data;
+    if (maybe.data && typeof maybe.data === 'string') {
+      try { maybe = JSON.parse(maybe.data); } catch (_) { maybe = maybe.data; }
+    } else if (maybe.data) {
+      maybe = maybe.data;
+    }
+
+    if (Array.isArray(maybe)) return maybe;
+    if (Array.isArray(maybe.listings)) return maybe.listings;
+    if (Array.isArray(maybe.listing)) return maybe.listing;
+    if (maybe.listing && typeof maybe.listing === 'object') return [maybe.listing];
+
+    return [];
+  }, [data]);
+
+  console.log('feed data:', data, 'normalized listings length:', listings.length, 'error:', error);
+
+  const renderItem = ({ item }: { item: any }) => (
+    <ListingCard
+      listing={item}
+      onPress={(id?: string) => navigation.navigate('ListingDetails', { listingId: id ?? item.id })}
+    />
+  );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.screen}>
       <View style={styles.header}>
-        <Button 
-          title="+ Sell Item" 
-          onPress={() => navigation.navigate('CreateListing')} 
-        />
+        <Text variant="h2">OnCampus Deals</Text>
+        <View style={styles.headerButtons}>
+          <Button title="+ Sell Item" onPress={() => navigation.navigate('CreateListing')} />
+        </View>
       </View>
+
       <FlatList
-        data={data?.listing ? [data.listing] : []} // Assuming response wrapper, adjusting for array
-        // NOTE: If response.listing is actually an array (which implies type mismatch in prompt DTO vs reality), adapt here.
-        // Assuming FetchListingResponse contains { listing: Listing[] } for feed, despite DTO saying singular. 
-        // Adapting to probable reality:
-        keyExtractor={(item: any) => item.id}
-        renderItem={({ item }) => (
-          <ListingCard 
-            listing={item} 
-            onPress={() => navigation.navigate('ListingDetails', { listingId: item.id })} 
-          />
-        )}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
-        contentContainerStyle={{ padding: 10 }}
+        data={listings}
+        keyExtractor={(item: any, idx) => item.id ?? item.listingId ?? String(idx)}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={() => refetch()} />}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            {isLoading ? <Text>Loading...</Text> : <Text>No listings yet.</Text>}
+          </View>
+        }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5' },
-  header: { padding: 10, backgroundColor: '#FFF' },
+  screen: { flex: 1, backgroundColor: '#f5f5f7' },
+  header: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerButtons: { flexDirection: 'row' },
+  listContent: { padding: 10, paddingBottom: 40 },
+  empty: { padding: 20, alignItems: 'center' },
 });

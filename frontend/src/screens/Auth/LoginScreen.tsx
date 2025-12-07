@@ -1,3 +1,4 @@
+// src/screens/Auth/LoginScreen.tsx
 import React from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -15,17 +16,16 @@ export const LoginScreen = ({ navigation }: any) => {
   const onSubmit = async (data: any) => {
     try {
       const response = await login(data).unwrap();
-      if (response.token && response.userId) {
-        dispatch(setCredentials({ 
-          token: response.token, 
-          userId: response.userId,
-          role: response.role 
-        }));
-      }
-    } catch (err: any) {
+      dispatch(setCredentials({
+        token: response.token,
+        userId: response.userId,
+        role: response.role
+      }));
+      // DO NOT call navigation.replace('Main') or navigation.reset(...)
+    } catch (err) {
       Alert.alert('Login Failed', 'Invalid credentials');
     }
-  };
+  };  
 
   return (
     <View style={styles.container}>

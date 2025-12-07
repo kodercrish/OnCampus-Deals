@@ -8,6 +8,7 @@ import { TabNavigator } from './TabNavigation';
 import { ListingDetailsScreen } from '../screens/Listing/ListingDetailsScreen';
 import { ChatScreen } from '../screens/Chat/ChatScreen';
 import { CreateListingScreen } from '../screens/Listing/CreateListingScreen';
+import TestImageScreen from '../screens/Debug/TestImageScren'; // add import
 
 const Stack = createNativeStackNavigator();
 
@@ -17,31 +18,19 @@ export const RootNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+
         {!isAuthenticated ? (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         ) : (
           <>
             <Stack.Screen name="Main" component={TabNavigator} />
-            <Stack.Screen 
-              name="ListingDetails" 
-              component={ListingDetailsScreen} 
-              options={{ headerShown: true, title: 'Details' }}
-            />
-            <Stack.Screen 
-              name="ChatScreen" 
-              component={ChatScreen} 
-              options={({ route }: any) => ({ 
-                headerShown: true, 
-                title: route.params.otherUserName 
-              })}
-            />
-            <Stack.Screen 
-              name="CreateListing" 
-              component={CreateListingScreen} 
-              options={{ headerShown: true, title: 'Sell Item' }}
-            />
+            <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} />
+            <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="CreateListing" component={CreateListingScreen} />
+            <Stack.Screen name="TestImage" component={TestImageScreen} options={{ headerShown: true, title: 'Test Image' }} />
           </>
         )}
+
       </Stack.Navigator>
     </NavigationContainer>
   );

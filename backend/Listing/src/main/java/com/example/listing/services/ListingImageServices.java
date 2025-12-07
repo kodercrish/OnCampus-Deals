@@ -8,6 +8,7 @@ import com.example.listing.repositories.ListingsRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ListingImageServices {
 
     private final ListingImagesRepository listingImagesRepository;
     private final ListingsRepository listingsRepository;
+    private final CloudinaryService cloudinaryService; // need Cloudinary service to upload MultipartFile
 
     /** Save one image */
     public String saveImage(ListingImages img) {
@@ -35,7 +37,7 @@ public class ListingImageServices {
         return listingImagesRepository.findByListingId(listingId);
     }
 
-    /** Add additional images after creation */
+    /** Add additional images after creation (URLs) */
     public String addImages(String listingId, List<String> urls) {
         Listings listing = listingsRepository.findById(listingId)
                 .orElseThrow(() -> new RuntimeException("Listing not found"));
@@ -50,18 +52,29 @@ public class ListingImageServices {
         return "Images added successfully";
     }
 
-    /** * NEW METHOD: Delete a single image by Image ID 
-     * This fixes the error in ListingController
-     */
+    /** Add images via MultipartFile list (uploads to cloudinary and persists records) */
+    public String addImagesMultipart(String listingId, List<MultipartFile> images) {
+        Listings listing = listingsRepository.findById(listingId)
+                .orElseThrow(() -> new RuntimeException("Listing not found"));
+
+        for (MultipartFile img : images) {
+            if (img == null || img.isEmpty()) continue;
+            String url = cloudinaryService.uploadImage(img);
+            ListingImages li = new ListingImages();
+            li.setListing(listing);
+            li.setImageUrl(url);
+            listingImagesRepository.save(li);
+        }
+
+        return "Images uploaded successfully";
+    }
+
+    /** Delete single image by ID */
     public String deleteImage(String imageId) {
-        // 1. Check if image exists
         if (!listingImagesRepository.existsById(imageId)) {
             throw new RuntimeException("Image not found with ID: " + imageId);
         }
-
-        // 2. Delete from Database
         listingImagesRepository.deleteById(imageId);
-
         return "Image deleted successfully";
     }
 }

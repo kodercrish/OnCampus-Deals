@@ -18,9 +18,13 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Slf4j
 @RestController
 @RequestMapping(ApiEndpoints.LISTING_BASE)
 @RequiredArgsConstructor
@@ -28,30 +32,61 @@ public class ListingController {
 
     private final ListingServices listingServices;
     private final ListingImageServices listingImageServices;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    /** Create listing + multipart images */
+    /** Create listing + multipart images (accepts 'data' part as JSON string) */
     @PostMapping(
         value = ApiEndpoints.CREATE_LISTING,
-        consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
+        consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
+        produces = { MediaType.APPLICATION_JSON_VALUE }
     )
     public ResponseEntity<CreateListingResponse> createListing(
-            @RequestPart("data") CreateListingRequest request,
-            @RequestPart("images") List<MultipartFile> images
+            @RequestPart("data") String data,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
         try {
-            String listingId = listingServices.createListingWithImages(request, images);
+            // parse data JSON -> CreateListingRequest
+            CreateListingRequest request = objectMapper.readValue(data, CreateListingRequest.class);
 
-            return ResponseEntity.ok(
-                new CreateListingResponse("Listing created successfully", listingId)
-            );
+            log.info("CreateListing called: sellerId={}, title={}, imageCount={}",
+                     request.getSellerId(), request.getTitle(),
+                     images == null ? 0 : images.size());
 
+            String listingId = listingServices.createListingWithImages(request, images == null ? List.of() : images);
+
+            return ResponseEntity.ok(new CreateListingResponse("Listing created successfully", listingId));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(400)
-                    .body(new CreateListingResponse(e.getMessage(), null));
-
+            log.warn("Client error: {}", e.getMessage(), e);
+            return ResponseEntity.status(400).body(new CreateListingResponse(e.getMessage(), null));
         } catch (Exception e) {
-            return ResponseEntity.status(500)
-                    .body(new CreateListingResponse("Internal server error", null));
+            log.error("Server error creating listing", e);
+            return ResponseEntity.status(500).body(new CreateListingResponse("Internal server error", null));
+        }
+    }
+
+    /**
+     * Optional: separate upload endpoint for two-step flows:
+     * POST /listing/{listingId}/upload-images
+     * Consumes multipart form-data with images parts.
+     */
+    @PostMapping(
+        value = "/{listingId}/upload-images",
+        consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
+    )
+    public ResponseEntity<AddImagesResponse> uploadImages(
+            @PathVariable("listingId") String listingId,
+            @RequestPart(value = "images", required = true) List<MultipartFile> images
+    ) {
+        try {
+            log.info("Upload images called for listing={}, count={}", listingId, images.size());
+            String msg = listingImageServices.addImagesMultipart(listingId, images);
+            return ResponseEntity.ok(new AddImagesResponse(msg));
+        } catch (RuntimeException e) {
+            log.warn("Client error during image upload: {}", e.getMessage(), e);
+            return ResponseEntity.status(400).body(new AddImagesResponse(e.getMessage()));
+        } catch (Exception e) {
+            log.error("Server error uploading images", e);
+            return ResponseEntity.status(500).body(new AddImagesResponse("Internal server error"));
         }
     }
 

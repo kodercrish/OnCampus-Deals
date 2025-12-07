@@ -1,3 +1,4 @@
+// src/screens/Auth/SignupScreen.tsx
 import React from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -16,10 +17,13 @@ export const SignupScreen = () => {
     try {
       const response = await signup(data).unwrap();
       if (response.token && response.userId) {
-        dispatch(setCredentials({ 
-          token: response.token, 
-          userId: response.userId 
+        // store credentials in Redux — RootNavigator will switch to Main automatically
+        dispatch(setCredentials({
+          token: response.token,
+          userId: response.userId,
+          role: response.role ?? null,
         }));
+        // DO NOT call navigation.reset here
       } else {
         Alert.alert('Success', response.message);
       }
