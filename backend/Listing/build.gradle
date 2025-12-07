@@ -35,6 +35,12 @@ dependencies {
 	implementation 'com.cloudinary:cloudinary-http44:1.33.0'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+        exceptionFormat "full"
+    }
 }

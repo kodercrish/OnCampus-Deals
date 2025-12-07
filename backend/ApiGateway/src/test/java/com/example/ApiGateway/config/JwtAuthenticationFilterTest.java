@@ -2,13 +2,8 @@ package com.example.ApiGateway.config;
 
 import com.example.ApiGateway.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts; // Import Jwts factory
-import org.junit.jupiter.api.Assertions; // Import Assertions
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpHeaders;
@@ -17,89 +12,113 @@ import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
-import static org.mockito.Mockito.when;
+import javax.crypto.SecretKey;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class JwtAuthenticationFilterTest {
 
-    @Mock
+    // secret must be same size used by JwtUtil
+    private static final String SECRET = "01234567890123456789012345678901";
+
+    private JwtAuthenticationFilter filterFactory;
     private JwtUtil jwtUtil;
 
-    @Mock
-    private GatewayFilterChain filterChain;
-
-    @InjectMocks
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        // Mock successful filter chain to just return empty Mono
-        when(filterChain.filter(org.mockito.ArgumentMatchers.any(ServerWebExchange.class)))
-                .thenReturn(Mono.empty());
+    void setup() {
+        filterFactory = new JwtAuthenticationFilter();
+        jwtUtil = new JwtUtil(SECRET);
+        // inject jwtUtil into the filter instance (field is @Autowired). We'll set via reflection to avoid changing production code.
+        try {
+            var f = JwtAuthenticationFilter.class.getDeclaredField("jwtUtil");
+            f.setAccessible(true);
+            f.set(filterFactory, jwtUtil);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
-    void testApply_MissingAuthHeader_ShouldReturnUnauthorized() {
-        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/1").build();
-        MockServerWebExchange exchange = MockServerWebExchange.from(request);
-        GatewayFilter filter = jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config());
+    void filter_shouldReturn401_whenMissingAuthorizationHeader() {
+        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/some").build();
+        var exchange = MockServerWebExchange.from(request);
 
-        Mono<Void> result = filter.filter(exchange, filterChain);
+        GatewayFilter filter = filterFactory.apply(new JwtAuthenticationFilter.Config());
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
 
-        StepVerifier.create(result).verifyComplete();
-        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        Mono<Void> result = filter.filter(exchange, chain);
+
+        // block to execute
+        result.block();
+
+        // expect 401 and chain not invoked
+        assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        verify(chain, never()).filter(any(ServerWebExchange.class));
     }
 
     @Test
-    void testApply_InvalidFormatHeader_ShouldReturnUnauthorized() {
-        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/1")
-                .header(HttpHeaders.AUTHORIZATION, "InvalidTokenFormat")
+    void filter_shouldReturn401_whenInvalidAuthHeader() {
+        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/some")
+                .header(HttpHeaders.AUTHORIZATION, "NotBearer token")
                 .build();
-        MockServerWebExchange exchange = MockServerWebExchange.from(request);
-        GatewayFilter filter = jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config());
+        var exchange = MockServerWebExchange.from(request);
 
-        Mono<Void> result = filter.filter(exchange, filterChain);
+        GatewayFilter filter = filterFactory.apply(new JwtAuthenticationFilter.Config());
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
 
-        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        filter.filter(exchange, chain).block();
+
+        assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        verify(chain, never()).filter(any(ServerWebExchange.class));
     }
 
     @Test
-    void testApply_ValidToken_ShouldPassAndAddHeader() {
-        String validToken = "valid.jwt.token";
-        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/1")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + validToken)
+    void filter_shouldReturn401_whenTokenInvalid() {
+        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/some")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer this.is.not.valid")
                 .build();
-        MockServerWebExchange exchange = MockServerWebExchange.from(request);
+        var exchange = MockServerWebExchange.from(request);
 
-        // FIX: Use Jwts.claims() instead of new DefaultClaims()
-        Claims claims = Jwts.claims().setSubject("user123");
-        
-        when(jwtUtil.validateToken(validToken)).thenReturn(claims);
+        GatewayFilter filter = filterFactory.apply(new JwtAuthenticationFilter.Config());
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
 
-        GatewayFilter filter = jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config());
+        filter.filter(exchange, chain).block();
 
-        Mono<Void> result = filter.filter(exchange, filterChain);
-
-        StepVerifier.create(result).verifyComplete();
-        Assertions.assertNotEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        verify(chain, never()).filter(any(ServerWebExchange.class));
     }
 
     @Test
-    void testApply_InvalidToken_ShouldReturnUnauthorized() {
-        String invalidToken = "bad.jwt.token";
-        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/1")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + invalidToken)
+    void filter_shouldCallChain_whenTokenValid() {
+        // create a valid token with subject equal to user id
+        SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+        String token = Jwts.builder()
+                .setSubject("user-abc")
+                .signWith(key)
+                .compact();
+
+        MockServerHttpRequest request = MockServerHttpRequest.get("/api/listing/some")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .build();
-        MockServerWebExchange exchange = MockServerWebExchange.from(request);
+        var exchange = MockServerWebExchange.from(request);
 
-        when(jwtUtil.validateToken(invalidToken)).thenThrow(new RuntimeException("Invalid Signature"));
+        GatewayFilter filter = filterFactory.apply(new JwtAuthenticationFilter.Config());
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
+        when(chain.filter(any(ServerWebExchange.class))).thenReturn(Mono.empty());
 
-        GatewayFilter filter = jwtAuthenticationFilter.apply(new JwtAuthenticationFilter.Config());
+        // execute filter
+        filter.filter(exchange, chain).block();
 
-        Mono<Void> result = filter.filter(exchange, filterChain);
+        // chain should be invoked once
+        verify(chain, times(1)).filter(any(ServerWebExchange.class));
 
-        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, exchange.getResponse().getStatusCode());
+        // Because the filter attempts to mutate the request headers, we at least ensure the chain executed successfully.
+        // (Mutation API used in code builds a mutated request; verifying header presence on exchange is non-trivial
+        // because original exchange object is not reassigned in the production code. The important behavior is: valid token -> chain called.)
     }
 }
