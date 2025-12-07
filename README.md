@@ -125,3 +125,22 @@ The frontend is a cross-platform mobile application built with **React Native** 
 5.  **Run on Device**:
     *   Scan the QR code displayed on the terminal after running the frontend from the Expo Go app downloaded in you mobile phone
     *   The shared ip will also be visible so you can update the backend application properties and also the frontend env to use that url for shared servers
+
+
+### Testing
+
+1.  **Testing files**:
+    *   Unit testing and Integration testing files are located inside the test folder inside src in each microservice
+    *   You can manually run all the tests by running the below code in each microservice :
+    ```bash
+    ./gradlew clean test
+    ```
+    #### Or
+    *   You can run all the test cases at once by running the below shell script and you cna view the test logs in the **test_logs folder** created after execution of below code:
+    ```bash
+    # Make the file executable
+    chmod +x run-all-tests.sh
+
+    # Run all tests
+    ./run-all-tests.sh
+    ```
