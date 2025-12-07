@@ -1,44 +1,114 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, StyleSheet } from 'react-native';
-import { useLazySearchListingsQuery } from '../../api/searchApi';
-import { ListingCard } from '../../components/listing/ListingCard';
+import { View, TextInput, StyleSheet, FlatList } from 'react-native';
+import { Text } from '../../components/common/Text';
 import { Button } from '../../components/common/Button';
+import { useSearchListingsMutation } from '../../api/searchApi';
+import { ListingCard } from '../../components/listing/ListingCard';
 
 export const SearchScreen = ({ navigation }: any) => {
   const [keyword, setKeyword] = useState('');
-  const [triggerSearch, { data, isLoading }] = useLazySearchListingsQuery();
+  const [category, setCategory] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
-  const handleSearch = () => {
-    triggerSearch({ keyword });
+  const [searchListings, { data, isLoading }] = useSearchListingsMutation();
+
+  const results = data?.results ?? [];
+
+  const onSearch = async () => {
+    try {
+      await searchListings({
+        keyword: keyword || null,
+        category: category || null,
+        minPrice: minPrice ? Number(minPrice) : null,
+        maxPrice: maxPrice ? Number(maxPrice) : null,
+      }).unwrap();
+    } catch (e) {
+      console.log('Search error:', e);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TextInput 
-          style={styles.input} 
-          placeholder="Search items..." 
-          value={keyword}
-          onChangeText={setKeyword}
-        />
-        <Button title="Go" onPress={handleSearch} loading={isLoading} />
-      </View>
-      <FlatList
-        data={data?.results || []}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ListingCard 
-            listing={item} 
-            onPress={() => navigation.navigate('ListingDetails', { listingId: item.id })} 
+    <FlatList
+      ListHeaderComponent={
+        <View style={styles.container}>
+          <Text variant="h2" style={{ marginBottom: 8 }}>
+            Search Listings
+          </Text>
+
+          <TextInput
+            placeholder="Keyword (Laptop, Chair...)"
+            style={styles.input}
+            value={keyword}
+            onChangeText={setKeyword}
           />
-        )}
-      />
-    </View>
+
+          <TextInput
+            placeholder="Category (optional)"
+            style={styles.input}
+            value={category}
+            onChangeText={setCategory}
+          />
+
+          <View style={styles.row}>
+            <TextInput
+              placeholder="Min Price"
+              keyboardType="numeric"
+              style={[styles.input, { flex: 1, marginRight: 6 }]}
+              value={minPrice}
+              onChangeText={setMinPrice}
+            />
+            <TextInput
+              placeholder="Max Price"
+              keyboardType="numeric"
+              style={[styles.input, { flex: 1, marginLeft: 6 }]}
+              value={maxPrice}
+              onChangeText={setMaxPrice}
+            />
+          </View>
+
+          <Button
+            title={isLoading ? 'Searching...' : 'Search'}
+            onPress={onSearch}
+          />
+        </View>
+      }
+      data={results}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <ListingCard
+          listing={item}
+          onPress={() =>
+            navigation.navigate('ListingDetails', {
+              listingId: item.id,
+            })
+          }
+        />
+      )}
+      ListEmptyComponent={
+        !isLoading && (
+          <Text variant="caption" style={{ marginTop: 20, textAlign: 'center' }}>
+            No results yet.
+          </Text>
+        )
+      }
+      contentContainerStyle={{ padding: 16 }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: { flexDirection: 'row', padding: 10, alignItems: 'center' },
-  input: { flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginRight: 10, backgroundColor: '#FFF' },
+  container: { padding: 16 },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    marginBottom: 12,
+  },
 });
