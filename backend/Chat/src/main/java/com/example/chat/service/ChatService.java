@@ -43,11 +43,22 @@ public class ChatService {
      * Send message (store it). Returns message id.
      */
     public String sendMessage(String chatId, String senderId, String content) {
-        // ensure chat exists
         ChatThread thread = chatThreadRepository.findById(chatId)
-                .orElseThrow(() -> new RuntimeException("Chat thread not found"));
+            .orElseThrow(() -> new RuntimeException("Chat thread not found"));
+    
+        if (!thread.getParticipant1Id().equals(senderId) && !thread.getParticipant2Id().equals(senderId)) {
+            throw new RuntimeException("Sender not participant of chat");
+        }
+    
+        Message msg = new Message(
+            // UUID.randomUUID().toString(), // id
+            // chatId,                       // chatId
+            // senderId,                     // senderId
+            // content,                      // content
+            // false,                        // isRead
+            // LocalDateTime.now()           // createdAt
+        );
 
-        Message msg = new Message();
         msg.setChatId(chatId);
         msg.setSenderId(senderId);
         msg.setContent(content);
@@ -57,6 +68,7 @@ public class ChatService {
         messageRepository.save(msg);
         return msg.getId();
     }
+    
 
     /**
      * Fetch all messages for a chat (optionally after a timestamp)

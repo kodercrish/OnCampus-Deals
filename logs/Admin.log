@@ -1,4 +1,4 @@
-Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, use --status for details
+Starting a Gradle Daemon, 13 busy and 35 stopped Daemons could not be reused, use --status for details
 > Task :compileJava UP-TO-DATE
 > Task :processResources UP-TO-DATE
 > Task :classes UP-TO-DATE
@@ -15,24 +15,24 @@ Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, us
 
  :: Spring Boot ::                (v3.5.7)
 
-2025-12-07T20:05:40.769+05:30  INFO 471120 --- [admin-service] [           main] com.example.admin.AdminApplication       : Starting AdminApplication using Java 21.0.9 with PID 471120 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Admin/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Admin)
-2025-12-07T20:05:40.772+05:30  INFO 471120 --- [admin-service] [           main] com.example.admin.AdminApplication       : No active profile set, falling back to 1 default profile: "default"
-2025-12-07T20:05:41.372+05:30  INFO 471120 --- [admin-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-07T20:05:41.431+05:30  INFO 471120 --- [admin-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 52 ms. Found 1 JPA repository interface.
-2025-12-07T20:05:42.600+05:30  INFO 471120 --- [admin-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8085 (http)
-2025-12-07T20:05:42.637+05:30  INFO 471120 --- [admin-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-07T20:05:42.637+05:30  INFO 471120 --- [admin-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-12-07T20:05:42.720+05:30  INFO 471120 --- [admin-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-07T20:05:42.725+05:30  INFO 471120 --- [admin-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1906 ms
-2025-12-07T20:05:43.040+05:30  INFO 471120 --- [admin-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-07T20:05:43.109+05:30  INFO 471120 --- [admin-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
-2025-12-07T20:05:43.170+05:30  INFO 471120 --- [admin-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-12-07T20:05:43.670+05:30  INFO 471120 --- [admin-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-07T20:05:43.716+05:30  INFO 471120 --- [admin-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-07T20:05:43.962+05:30  INFO 471120 --- [admin-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1934339
-2025-12-07T20:05:43.965+05:30  INFO 471120 --- [admin-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-12-07T20:05:44.033+05:30  WARN 471120 --- [admin-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-12-07T20:05:44.059+05:30  INFO 471120 --- [admin-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-12-07T20:56:34.939+05:30  INFO 503810 --- [admin-service] [           main] com.example.admin.AdminApplication       : Starting AdminApplication using Java 21.0.9 with PID 503810 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Admin/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Admin)
+2025-12-07T20:56:34.944+05:30  INFO 503810 --- [admin-service] [           main] com.example.admin.AdminApplication       : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T20:56:36.607+05:30  INFO 503810 --- [admin-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-07T20:56:36.738+05:30  INFO 503810 --- [admin-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 103 ms. Found 1 JPA repository interface.
+2025-12-07T20:56:37.692+05:30  INFO 503810 --- [admin-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8085 (http)
+2025-12-07T20:56:37.718+05:30  INFO 503810 --- [admin-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-07T20:56:37.719+05:30  INFO 503810 --- [admin-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-07T20:56:37.798+05:30  INFO 503810 --- [admin-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-07T20:56:37.804+05:30  INFO 503810 --- [admin-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2756 ms
+2025-12-07T20:56:38.138+05:30  INFO 503810 --- [admin-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-07T20:56:38.210+05:30  INFO 503810 --- [admin-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-07T20:56:38.252+05:30  INFO 503810 --- [admin-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-07T20:56:38.707+05:30  INFO 503810 --- [admin-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-07T20:56:38.787+05:30  INFO 503810 --- [admin-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-07T20:56:39.111+05:30  INFO 503810 --- [admin-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1934339
+2025-12-07T20:56:39.114+05:30  INFO 503810 --- [admin-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-07T20:56:39.195+05:30  WARN 503810 --- [admin-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-07T20:56:39.241+05:30  INFO 503810 --- [admin-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0.44
@@ -40,8 +40,8 @@ Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, us
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-12-07T20:05:45.272+05:30  INFO 471120 --- [admin-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-07T20:05:45.279+05:30  INFO 471120 --- [admin-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-07T20:05:45.647+05:30  WARN 471120 --- [admin-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-07T20:05:46.322+05:30  INFO 471120 --- [admin-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8085 (http) with context path '/'
-2025-12-07T20:05:46.339+05:30  INFO 471120 --- [admin-service] [           main] com.example.admin.AdminApplication       : Started AdminApplication in 6.017 seconds (process running for 6.229)
+2025-12-07T20:56:40.533+05:30  INFO 503810 --- [admin-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-07T20:56:40.538+05:30  INFO 503810 --- [admin-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T20:56:40.961+05:30  WARN 503810 --- [admin-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-07T20:56:41.815+05:30  INFO 503810 --- [admin-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8085 (http) with context path '/'
+2025-12-07T20:56:41.825+05:30  INFO 503810 --- [admin-service] [           main] com.example.admin.AdminApplication       : Started AdminApplication in 7.302 seconds (process running for 7.491)

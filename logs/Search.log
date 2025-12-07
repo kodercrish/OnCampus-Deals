@@ -1,4 +1,4 @@
-Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, use --status for details
+Timed out waiting for finished message from client socket connection from /127.0.0.1:38499 to /127.0.0.1:35232. Discarding connection.
 > Task :compileJava UP-TO-DATE
 > Task :processResources UP-TO-DATE
 > Task :classes UP-TO-DATE
@@ -15,24 +15,24 @@ Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, us
 
  :: Spring Boot ::                (v3.5.7)
 
-2025-12-07T20:05:36.847+05:30  INFO 470693 --- [search-service] [           main] com.example.search.SearchApplication     : Starting SearchApplication using Java 21.0.9 with PID 470693 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Search/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Search)
-2025-12-07T20:05:36.850+05:30  INFO 470693 --- [search-service] [           main] com.example.search.SearchApplication     : No active profile set, falling back to 1 default profile: "default"
-2025-12-07T20:05:37.600+05:30  INFO 470693 --- [search-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-07T20:05:37.651+05:30  INFO 470693 --- [search-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 45 ms. Found 1 JPA repository interface.
-2025-12-07T20:05:38.052+05:30  INFO 470693 --- [search-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
-2025-12-07T20:05:38.065+05:30  INFO 470693 --- [search-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-07T20:05:38.065+05:30  INFO 470693 --- [search-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-12-07T20:05:38.123+05:30  INFO 470693 --- [search-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-07T20:05:38.125+05:30  INFO 470693 --- [search-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1206 ms
-2025-12-07T20:05:38.360+05:30  INFO 470693 --- [search-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-07T20:05:38.425+05:30  INFO 470693 --- [search-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
-2025-12-07T20:05:38.470+05:30  INFO 470693 --- [search-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-12-07T20:05:38.848+05:30  INFO 470693 --- [search-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-07T20:05:38.885+05:30  INFO 470693 --- [search-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-07T20:05:39.069+05:30  INFO 470693 --- [search-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2fac80a8
-2025-12-07T20:05:39.071+05:30  INFO 470693 --- [search-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-12-07T20:05:39.111+05:30  WARN 470693 --- [search-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-12-07T20:05:39.129+05:30  INFO 470693 --- [search-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-12-07T20:56:18.825+05:30  INFO 502667 --- [search-service] [           main] com.example.search.SearchApplication     : Starting SearchApplication using Java 21.0.9 with PID 502667 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Search/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Search)
+2025-12-07T20:56:18.831+05:30  INFO 502667 --- [search-service] [           main] com.example.search.SearchApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T20:56:20.526+05:30  INFO 502667 --- [search-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-07T20:56:20.688+05:30  INFO 502667 --- [search-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 118 ms. Found 1 JPA repository interface.
+2025-12-07T20:56:21.498+05:30  INFO 502667 --- [search-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2025-12-07T20:56:21.524+05:30  INFO 502667 --- [search-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-07T20:56:21.525+05:30  INFO 502667 --- [search-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-07T20:56:21.591+05:30  INFO 502667 --- [search-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-07T20:56:21.594+05:30  INFO 502667 --- [search-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2594 ms
+2025-12-07T20:56:21.921+05:30  INFO 502667 --- [search-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-07T20:56:21.974+05:30  INFO 502667 --- [search-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-07T20:56:22.009+05:30  INFO 502667 --- [search-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-07T20:56:22.396+05:30  INFO 502667 --- [search-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-07T20:56:22.436+05:30  INFO 502667 --- [search-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-07T20:56:22.676+05:30  INFO 502667 --- [search-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7ef8e623
+2025-12-07T20:56:22.679+05:30  INFO 502667 --- [search-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-07T20:56:22.729+05:30  WARN 502667 --- [search-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-07T20:56:22.759+05:30  INFO 502667 --- [search-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0.44
@@ -40,9 +40,9 @@ Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, us
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-12-07T20:05:39.830+05:30  INFO 470693 --- [search-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-07T20:05:39.832+05:30  INFO 470693 --- [search-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-07T20:05:40.020+05:30  INFO 470693 --- [search-service] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-12-07T20:05:41.519+05:30  WARN 470693 --- [search-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-07T20:05:42.419+05:30  INFO 470693 --- [search-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8084 (http) with context path '/'
-2025-12-07T20:05:42.467+05:30  INFO 470693 --- [search-service] [           main] com.example.search.SearchApplication     : Started SearchApplication in 6.122 seconds (process running for 6.396)
+2025-12-07T20:56:23.858+05:30  INFO 502667 --- [search-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-07T20:56:23.863+05:30  INFO 502667 --- [search-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T20:56:24.178+05:30  INFO 502667 --- [search-service] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-07T20:56:26.242+05:30  WARN 502667 --- [search-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-07T20:56:26.442+05:30  INFO 502667 --- [search-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8084 (http) with context path '/'
+2025-12-07T20:56:26.451+05:30  INFO 502667 --- [search-service] [           main] com.example.search.SearchApplication     : Started SearchApplication in 8.424 seconds (process running for 8.891)

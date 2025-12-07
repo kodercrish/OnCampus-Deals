@@ -1,4 +1,4 @@
-Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, use --status for details
+Starting a Gradle Daemon, 13 busy and 35 stopped Daemons could not be reused, use --status for details
 > Task :compileJava UP-TO-DATE
 > Task :processResources UP-TO-DATE
 > Task :classes UP-TO-DATE
@@ -15,14 +15,14 @@ Starting a Gradle Daemon, 13 busy and 10 stopped Daemons could not be reused, us
 
  :: Spring Boot ::                (v3.5.7)
 
-2025-12-07T20:05:44.629+05:30  INFO 471296 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : Starting ApiGatewayApplication using Java 21.0.9 with PID 471296 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/ApiGateway/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/ApiGateway)
-2025-12-07T20:05:44.633+05:30  INFO 471296 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : No active profile set, falling back to 1 default profile: "default"
-2025-12-07T20:05:46.769+05:30  INFO 471296 --- [api-gateway] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5fb0860d-d224-32e9-a07c-f52e5a818a48
-2025-12-07T20:05:47.618+05:30  INFO 471296 --- [api-gateway] [           main] ctiveUserDetailsServiceAutoConfiguration : 
+2025-12-07T20:56:43.146+05:30  INFO 504185 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : Starting ApiGatewayApplication using Java 21.0.9 with PID 504185 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/ApiGateway/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/ApiGateway)
+2025-12-07T20:56:43.148+05:30  INFO 504185 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T20:56:43.858+05:30  INFO 504185 --- [api-gateway] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5fb0860d-d224-32e9-a07c-f52e5a818a48
+2025-12-07T20:56:44.112+05:30  INFO 504185 --- [api-gateway] [           main] ctiveUserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 874aba8f-30ac-4668-8472-6e6418d28a21
+Using generated security password: b8c9062c-77a4-4092-b78c-4a33b6cc649b
 
-2025-12-07T20:05:47.990+05:30  WARN 471296 --- [api-gateway] [           main] GatewayClassPathWarningAutoConfiguration : 
+2025-12-07T20:56:44.226+05:30  WARN 504185 --- [api-gateway] [           main] GatewayClassPathWarningAutoConfiguration : 
 
 **********************************************************
 
@@ -31,21 +31,21 @@ The artifact spring-cloud-gateway-server is deprecated. It will be removed in th
 **********************************************************
 
 
-2025-12-07T20:05:48.514+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
-2025-12-07T20:05:48.514+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
-2025-12-07T20:05:48.515+05:30  INFO 471296 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
-2025-12-07T20:05:48.846+05:30  WARN 471296 --- [api-gateway] [           main] s.w.s.StarterDeprecatedAutoConfiguration : 
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2025-12-07T20:56:44.387+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2025-12-07T20:56:44.388+05:30  INFO 504185 --- [api-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2025-12-07T20:56:44.524+05:30  WARN 504185 --- [api-gateway] [           main] s.w.s.StarterDeprecatedAutoConfiguration : 
 
 **********************************************************
 
@@ -54,9 +54,9 @@ spring-cloud-starter-gateway is deprecated. It will be removed in the next major
 **********************************************************
 
 
-2025-12-07T20:05:48.967+05:30  INFO 471296 --- [api-gateway] [           main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
-2025-12-07T20:05:49.057+05:30  INFO 471296 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : Started ApiGatewayApplication in 5.422 seconds (process running for 6.646)
-2025-12-07T20:05:49.061+05:30  WARN 471296 --- [api-gateway] [           main] ServerWebfluxPropertiesMigrationListener : 
+2025-12-07T20:56:44.586+05:30  INFO 504185 --- [api-gateway] [           main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8080 (http)
+2025-12-07T20:56:44.636+05:30  INFO 504185 --- [api-gateway] [           main] c.e.ApiGateway.ApiGatewayApplication     : Started ApiGatewayApplication in 1.946 seconds (process running for 2.649)
+2025-12-07T20:56:44.638+05:30  WARN 504185 --- [api-gateway] [           main] ServerWebfluxPropertiesMigrationListener : 
 The use of configuration keys that have been renamed was found in the environment:
 
 Property source 'Config resource 'class path resource [application.properties]' via location 'optional:classpath:/'':
@@ -136,7 +136,7 @@ Property source 'Config resource 'class path resource [application.properties]' 
 
 Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
 
-2025-12-07T20:05:49.062+05:30  WARN 471296 --- [api-gateway] [           main] o.s.b.c.p.m.PropertiesMigrationListener  : 
+2025-12-07T20:56:44.639+05:30  WARN 504185 --- [api-gateway] [           main] o.s.b.c.p.m.PropertiesMigrationListener  : 
 The use of configuration keys that have been renamed was found in the environment:
 
 Property source 'Config resource 'class path resource [application.properties]' via location 'optional:classpath:/'':

@@ -1,42 +1,63 @@
+// src/screens/Chat/ChatListScreen.tsx
 import React from 'react';
 import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { useGetMyChatsQuery } from '../../api/chatApi';
+import { useFetchMyChatsQuery } from '../../api/chatApi';
 import { Text } from '../../components/common/Text';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 export const ChatListScreen = ({ navigation }: any) => {
-  const { userId } = useSelector((state: RootState) => state.auth);
-  // Need to pass a dummy arg if FetchChatsRequest requires userId, 
-  // though typically it's inferred from token in headers. 
-  // DTO says FetchChatsRequest { userId: string }, but usually endpoints like /my-chats don't need params.
-  // Assuming endpoint ignores body if GET, or we pass null.
-  // SRS endpoint constant: MY_CHATS is a GET.
-  const { data, isLoading } = useGetMyChatsQuery();
+  const { userId } = useSelector((s: RootState) => s.auth);
+  const { data, isLoading, error } = useFetchMyChatsQuery({ userId }, { skip: !userId });
 
-  if (isLoading) return <Text>Loading chats...</Text>;
+  const chats = data?.chats ?? [];
+
+  const renderItem = ({ item }: any) => {
+    const otherId = item.participant1Id === userId ? item.participant2Id : item.participant1Id;
+
+    return (
+      <TouchableOpacity
+        style={styles.row}
+        onPress={() =>
+          navigation.navigate('ChatScreen', {
+            chatId: item.id,
+            otherUserId: otherId,
+            otherUserName: otherId, // you can replace by fetching user later
+          })
+        }
+      >
+        <View>
+          <Text variant="h3">{otherId}</Text>
+          <Text variant="caption">{new Date(item.createdAt).toLocaleString()}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.center}>
+        <Text>Loading chats…</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
-      data={data?.chats || []}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <TouchableOpacity 
-          style={styles.item}
-          onPress={() => navigation.navigate('ChatScreen', { 
-            chatId: item.id, 
-            otherUserName: item.otherParticipantName 
-          })}
-        >
-          <Text variant="h2">{item.otherParticipantName}</Text>
-          <Text variant="caption">{item.listingTitle}</Text>
-          <Text numberOfLines={1}>{item.lastMessage}</Text>
-        </TouchableOpacity>
-      )}
+      data={chats}
+      keyExtractor={(c: any) => c.id}
+      renderItem={renderItem}
+      contentContainerStyle={{ padding: 12 }}
+      ListEmptyComponent={
+        <View style={styles.center}>
+          <Text>No chats yet.</Text>
+        </View>
+      }
     />
   );
 };
 
 const styles = StyleSheet.create({
-  item: { padding: 15, borderBottomWidth: 1, borderBottomColor: '#eee', backgroundColor: '#FFF' },
+  row: { padding: 12, borderBottomWidth: 1, borderBottomColor: '#eee' },
+  center: { padding: 20, alignItems: 'center' },
 });

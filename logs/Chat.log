@@ -1,4 +1,4 @@
-Timed out waiting for finished message from client socket connection from /127.0.0.1:38859 to /127.0.0.1:55294. Discarding connection.
+Starting a Gradle Daemon, 13 busy and 35 stopped Daemons could not be reused, use --status for details
 > Task :compileJava UP-TO-DATE
 > Task :processResources UP-TO-DATE
 > Task :classes UP-TO-DATE
@@ -15,25 +15,25 @@ Timed out waiting for finished message from client socket connection from /127.0
 
  :: Spring Boot ::                (v3.5.7)
 
-2025-12-07T20:05:22.958+05:30  INFO 469760 --- [chat-service] [           main] com.example.chat.ChatApplication         : Starting ChatApplication using Java 21.0.9 with PID 469760 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Chat/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Chat)
-2025-12-07T20:05:22.964+05:30  INFO 469760 --- [chat-service] [           main] com.example.chat.ChatApplication         : No active profile set, falling back to 1 default profile: "default"
-2025-12-07T20:05:24.797+05:30  INFO 469760 --- [chat-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-12-07T20:05:24.899+05:30  INFO 469760 --- [chat-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 85 ms. Found 2 JPA repository interfaces.
-2025-12-07T20:05:25.752+05:30  INFO 469760 --- [chat-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
-2025-12-07T20:05:25.781+05:30  INFO 469760 --- [chat-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-07T20:05:25.783+05:30  INFO 469760 --- [chat-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-12-07T20:05:25.868+05:30  INFO 469760 --- [chat-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-07T20:05:25.870+05:30  INFO 469760 --- [chat-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2803 ms
-2025-12-07T20:05:26.216+05:30  INFO 469760 --- [chat-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-12-07T20:05:26.265+05:30  INFO 469760 --- [chat-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
-2025-12-07T20:05:26.307+05:30  INFO 469760 --- [chat-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-12-07T20:05:26.684+05:30  INFO 469760 --- [chat-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-12-07T20:05:26.757+05:30  INFO 469760 --- [chat-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-07T20:05:26.984+05:30  INFO 469760 --- [chat-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2ba024cb
-2025-12-07T20:05:26.986+05:30  INFO 469760 --- [chat-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-12-07T20:05:27.035+05:30  WARN 469760 --- [chat-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-12-07T20:05:27.037+05:30  WARN 469760 --- [chat-service] [           main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2025-12-07T20:05:27.059+05:30  INFO 469760 --- [chat-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-12-07T20:56:33.308+05:30  INFO 503628 --- [chat-service] [           main] com.example.chat.ChatApplication         : Starting ChatApplication using Java 21.0.9 with PID 503628 (/mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Chat/build/classes/java/main started by krish in /mnt/newstorage/IIITB/5th semester/SE/Final Project/OnCampus-Deals/backend/Chat)
+2025-12-07T20:56:33.311+05:30  INFO 503628 --- [chat-service] [           main] com.example.chat.ChatApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-12-07T20:56:33.931+05:30  INFO 503628 --- [chat-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-07T20:56:33.999+05:30  INFO 503628 --- [chat-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 2 JPA repository interfaces.
+2025-12-07T20:56:34.411+05:30  INFO 503628 --- [chat-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-12-07T20:56:34.426+05:30  INFO 503628 --- [chat-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-07T20:56:34.426+05:30  INFO 503628 --- [chat-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-07T20:56:34.471+05:30  INFO 503628 --- [chat-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-07T20:56:34.473+05:30  INFO 503628 --- [chat-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1120 ms
+2025-12-07T20:56:34.626+05:30  INFO 503628 --- [chat-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-07T20:56:34.670+05:30  INFO 503628 --- [chat-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-07T20:56:34.701+05:30  INFO 503628 --- [chat-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-07T20:56:35.030+05:30  INFO 503628 --- [chat-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-07T20:56:35.086+05:30  INFO 503628 --- [chat-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-07T20:56:35.315+05:30  INFO 503628 --- [chat-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6fd1ea75
+2025-12-07T20:56:35.318+05:30  INFO 503628 --- [chat-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-07T20:56:35.374+05:30  WARN 503628 --- [chat-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-07T20:56:35.377+05:30  WARN 503628 --- [chat-service] [           main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-12-07T20:56:35.399+05:30  INFO 503628 --- [chat-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0
@@ -41,27 +41,8 @@ Timed out waiting for finished message from client socket connection from /127.0
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-12-07T20:05:27.940+05:30  INFO 469760 --- [chat-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-12-07T20:05:28.017+05:30  INFO 469760 --- [chat-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-12-07T20:05:28.945+05:30  WARN 469760 --- [chat-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-12-07T20:05:29.744+05:30  INFO 469760 --- [chat-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
-2025-12-07T20:05:29.755+05:30  INFO 469760 --- [chat-service] [           main] com.example.chat.ChatApplication         : Started ChatApplication in 7.646 seconds (process running for 8.106)
-2025-12-07T20:07:42.343+05:30  INFO 469760 --- [chat-service] [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-12-07T20:07:42.343+05:30  INFO 469760 --- [chat-service] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-12-07T20:07:42.343+05:30  INFO 469760 --- [chat-service] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2025-12-07T20:07:42.351+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-2025-12-07T20:07:45.492+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-2025-12-07T20:07:48.544+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-Hibernate: 
-    select
-        ct1_0.id,
-        ct1_0.created_at,
-        ct1_0.participant1_id,
-        ct1_0.participant2_id 
-    from
-        chat_threads ct1_0 
-    where
-        ct1_0.id=?
-2025-12-07T20:07:50.546+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-2025-12-07T20:07:53.684+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-2025-12-07T20:08:18.162+05:30  WARN 469760 --- [chat-service] [nio-8083-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-12-07T20:56:37.026+05:30  INFO 503628 --- [chat-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-07T20:56:37.131+05:30  INFO 503628 --- [chat-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-07T20:56:37.866+05:30  WARN 503628 --- [chat-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-07T20:56:38.549+05:30  INFO 503628 --- [chat-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-12-07T20:56:38.569+05:30  INFO 503628 --- [chat-service] [           main] com.example.chat.ChatApplication         : Started ChatApplication in 5.599 seconds (process running for 5.779)

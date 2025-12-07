@@ -15,6 +15,10 @@ import { Button } from '../../components/common/Button';
 import { useGetListingDetailsQuery } from '../../api/listingApi';
 import { useFetchUserQuery } from '../../api/userApi';
 
+import { useCreateChatMutation } from '../../api/chatApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+
 const { width: SCREEN_W } = Dimensions.get('window');
 
 export const ListingDetailsScreen = ({ route, navigation }: any) => {
@@ -48,6 +52,8 @@ export const ListingDetailsScreen = ({ route, navigation }: any) => {
     { skip: !sellerId }
   );
   const seller = sellerData?.user ?? null;
+  const { userId: currentUserId } = useSelector((state: RootState) => state.auth);
+  const [createChat] = useCreateChatMutation();
 
   // --- Loading Screen ---
   if (isLoading || isFetching) {
@@ -128,13 +134,32 @@ export const ListingDetailsScreen = ({ route, navigation }: any) => {
 
           <Button
             title="Chat with Seller"
-            onPress={() =>
-              navigation.navigate('ChatScreen', {
-                chatId: `${sellerId}-${listing.id}`,
-                otherUserName: seller?.name ?? 'Seller',
-              })
-            }
+            onPress={async () => {
+              if (!currentUserId) {
+                // require login
+                Alert.alert('Login required', 'Please login to chat with seller');
+                return;
+              }
+              try {
+                const res = await createChat({ user1Id: currentUserId, user2Id: sellerId }).unwrap();
+                const chatId = res.chatId;
+                if (!chatId) {
+                  Alert.alert('Error', 'Could not create chat');
+                  return;
+                }
+                navigation.navigate('ChatScreen', {
+                  chatId,
+                  otherUserName: seller?.name ?? 'Seller',
+                  otherUserId: sellerId,
+                });
+                
+              } catch (e: any) {
+                console.error('createChat failed', e);
+                Alert.alert('Error', e?.data?.message ?? 'Failed to start chat');
+              }
+            }}
           />
+
         </View>
       </View>
     </ScrollView>
