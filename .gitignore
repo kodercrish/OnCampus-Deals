@@ -1,2 +1,6 @@
-// ignoing the logs file
+#  ignoing the logs file
 logs/
+test_logs/
+
+# ignoring service_pids.txt
+service_pids.txt
