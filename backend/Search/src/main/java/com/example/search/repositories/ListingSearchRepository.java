@@ -11,17 +11,12 @@ import java.util.List;
 @Repository
 public interface ListingSearchRepository extends JpaRepository<ListingSearchView, String> {
 
-    @Query("""
-        SELECT l FROM ListingSearchView l
-        WHERE (:keyword IS NULL OR LOWER(l.title) LIKE LOWER(CONCAT('%', :keyword, '%')))
-        AND (:category IS NULL OR LOWER(l.category) = LOWER(:category))
-        AND (:min IS NULL OR l.price >= :min)
-        AND (:max IS NULL OR l.price <= :max)
-        """)
-    List<ListingSearchView> search(
-            @Param("keyword") String keyword,
-            @Param("category") String category,
-            @Param("min") Double min,
-            @Param("max") Double max
-    );
+    @Query("SELECT l FROM ListingSearchView l WHERE " +
+       "(:keyword IS NULL OR LOWER(l.title) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
+       "(:category IS NULL OR l.category = :category) AND " +
+       "l.price BETWEEN :min AND :max")
+List<ListingSearchView> search(@Param("keyword") String keyword,
+                               @Param("category") String category,
+                               @Param("min") Double min,
+                               @Param("max") Double max);
 }

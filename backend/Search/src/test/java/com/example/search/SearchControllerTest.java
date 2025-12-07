@@ -32,8 +32,10 @@ public class SearchControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.results.length()").value(1))
-                .andExpect(jsonPath("$.results[0].title").value("iPhone 12"));
+                .andExpect(jsonPath("$.results.length()").value(3)) // Matches iPhone 12, iPhone 13, iPhone Case
+                .andExpect(jsonPath("$.results[0].title").value("iPhone 12"))
+                .andExpect(jsonPath("$.results[1].title").value("iPhone 13"))
+                .andExpect(jsonPath("$.results[2].title").value("iPhone Case"));
     }
 
     @Test
@@ -44,7 +46,11 @@ public class SearchControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.results.length()").value(2));
+                .andExpect(jsonPath("$.results.length()").value(4)) // Matches ACTIVE electronics items
+                .andExpect(jsonPath("$.results[0].title").value("iPhone 12"))
+                .andExpect(jsonPath("$.results[1].title").value("Laptop HP"))
+                .andExpect(jsonPath("$.results[2].title").value("Samsung TV"))
+                .andExpect(jsonPath("$.results[3].title").value("iPhone 13"));
     }
 
     @Test
@@ -55,7 +61,10 @@ public class SearchControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.results.length()").value(1))
-                .andExpect(jsonPath("$.results[0].title").value("Wooden Table"));
+                .andExpect(jsonPath("$.results.length()").value(4)) // Matches Wooden Table, Pencil, iPhone Case, Unknown Item
+                .andExpect(jsonPath("$.results[0].title").value("Wooden Table"))
+                .andExpect(jsonPath("$.results[1].title").value("Pencil"))
+                .andExpect(jsonPath("$.results[2].title").value("iPhone Case"))
+                .andExpect(jsonPath("$.results[3].title").value("Unknown Item"));
     }
 }
