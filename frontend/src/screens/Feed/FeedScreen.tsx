@@ -5,8 +5,8 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetFeedQuery } from '../../api/listingApi';
 import { ListingCard } from '../../components/listing/ListingCard';
 import { Button } from '../../components/common/Button';
@@ -17,18 +17,33 @@ export const FeedScreen = ({ navigation }: any) => {
 
   const listings: any[] = useMemo(() => {
     if (!data) return [];
-    // server returns { listings: Listing[] } or maybe { data: { listings: [...] } }
     let maybe: any = data;
-    if (maybe.data && typeof maybe.data === 'string') {
-      try { maybe = JSON.parse(maybe.data); } catch (_) { maybe = maybe.data; }
-    } else if (maybe.data) {
-      maybe = maybe.data;
+
+    // Some of your logs show wrapper { data: "..." }, handle it:
+    if (maybe.data) {
+      if (typeof maybe.data === 'string') {
+        try {
+          maybe = JSON.parse(maybe.data);
+        } catch {
+          maybe = maybe.data;
+        }
+      } else {
+        maybe = maybe.data;
+      }
     }
 
     if (Array.isArray(maybe)) return maybe;
     if (Array.isArray(maybe.listings)) return maybe.listings;
     if (Array.isArray(maybe.listing)) return maybe.listing;
     if (maybe.listing && typeof maybe.listing === 'object') return [maybe.listing];
+
+    // Sometimes the backend returns { listings: "<json-string>" }
+    if (typeof maybe.listings === 'string') {
+      try {
+        const parsed = JSON.parse(maybe.listings);
+        if (Array.isArray(parsed)) return parsed;
+      } catch {}
+    }
 
     return [];
   }, [data]);
@@ -38,7 +53,7 @@ export const FeedScreen = ({ navigation }: any) => {
   const renderItem = ({ item }: { item: any }) => (
     <ListingCard
       listing={item}
-      onPress={(id?: string) => navigation.navigate('ListingDetails', { listingId: id ?? item.id })}
+      onPress={() => navigation.navigate('ListingDetails', { listingId: item.id ?? item.listingId })}
     />
   );
 
@@ -78,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  headerButtons: { flexDirection: 'row' },
+  headerButtons: { flexDirection: 'row', gap: 8 },
   listContent: { padding: 10, paddingBottom: 40 },
   empty: { padding: 20, alignItems: 'center' },
 });

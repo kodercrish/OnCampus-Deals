@@ -15,46 +15,52 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 type ListingCardProps = {
   listing: any;
-  onPress?: (id?: string) => void;
+  onPress?: () => void;
 };
 
 export const ListingCard = ({ listing, onPress }: ListingCardProps) => {
+  // Normalize images into URL array
   const images: string[] = React.useMemo(() => {
     if (!listing) return [];
     const imgs = listing.images ?? listing.imageUrls ?? listing.photos ?? null;
+
     if (!imgs) return [];
+    // array of strings
     if (Array.isArray(imgs) && imgs.length > 0 && typeof imgs[0] === 'string') {
       return imgs as string[];
     }
+    // array of objects like { imageUrl: '...' } or { url: '...' } or { image_url: '...' }
     if (Array.isArray(imgs) && typeof imgs[0] === 'object') {
-      return imgs.map((it: any) => it.imageUrl ?? it.image_url ?? it.url ?? '').filter(Boolean);
+      return imgs
+        .map((it: any) => it.imageUrl ?? it.image_url ?? it.url ?? it.path ?? '')
+        .filter(Boolean);
     }
+    // single url string
     if (typeof imgs === 'string') return [imgs];
     return [];
   }, [listing]);
 
   const firstImage = images.length > 0 ? images[0] : null;
 
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  // loading / error states for first image
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    setError(false);
+    // reset states on image change
     setLoading(false);
+    setError(false);
   }, [firstImage]);
 
   const title = listing.title ?? listing.name ?? 'Untitled';
   const price = listing.price ?? null;
   const desc = listing.description ?? '';
 
+  // local placeholder - ensure this file exists: assets/placeholder.png
   const placeholder = require('../../../assets/placeholder.png');
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => onPress?.(listing.id ?? listing.listingId)}
-      style={styles.card}
-    >
+    <TouchableOpacity activeOpacity={0.9} onPress={onPress} style={styles.card}>
       <View style={styles.imageContainer}>
         {firstImage && !error ? (
           <>
@@ -62,9 +68,16 @@ export const ListingCard = ({ listing, onPress }: ListingCardProps) => {
               source={{ uri: firstImage }}
               style={styles.image}
               resizeMode="cover"
-              onLoadStart={() => { setLoading(true); setError(false); }}
+              onLoadStart={() => {
+                setLoading(true);
+                setError(false);
+              }}
               onLoad={() => setLoading(false)}
-              onError={(e) => { console.warn('Image load error', e.nativeEvent || e); setLoading(false); setError(true); }}
+              onError={(e) => {
+                console.warn('ListingCard image load error:', e.nativeEvent ?? e);
+                setLoading(false);
+                setError(true);
+              }}
             />
             {loading && (
               <View style={styles.loadingOverlay}>
@@ -78,18 +91,27 @@ export const ListingCard = ({ listing, onPress }: ListingCardProps) => {
       </View>
 
       <View style={styles.content}>
-        <Text variant="h3" style={styles.title}>{title}</Text>
+        <Text variant="h3" style={styles.title}>
+          {title}
+        </Text>
 
         <View style={styles.row}>
-          <Text variant="h2" style={styles.price}>{price != null ? `₹${Number(price).toFixed(2)}` : '—'}</Text>
+          <Text variant="h2" style={styles.price}>
+            {price != null ? `₹${Number(price).toFixed(2)}` : '—'}
+          </Text>
+
           <View style={{ flex: 1 }} />
-          <Button title="View" onPress={() => onPress?.(listing.id ?? listing.listingId)} />
+          <Button title="View" onPress={onPress} />
         </View>
 
-        <Text variant="body" style={styles.description} numberOfLines={3}>{desc}</Text>
+        <Text variant="body" style={styles.description} numberOfLines={3}>
+          {desc}
+        </Text>
 
         <Text variant="caption" style={styles.meta}>
-          {listing.sellerName ? `Seller: ${listing.sellerName}` : `Seller ID: ${listing.sellerId ?? 'Unknown'}`}
+          {listing.sellerName
+            ? `Seller: ${listing.sellerName}`
+            : `Seller ID: ${listing.sellerId ?? 'Unknown'}`}
         </Text>
       </View>
     </TouchableOpacity>

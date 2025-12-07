@@ -1,19 +1,31 @@
 // src/screens/TestImageScreen.tsx
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { Text } from '../../components/common/Text';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
-export default function TestImageScreen({ route }: any) {
-  const url = route.params?.url ?? route.params?.uri ?? null;
+const TestImageScreen = ({ route }: any) => {
+  const { url } = route.params ?? {};
   return (
-    <View style={styles.container}>
-      {url ? <Image source={{ uri: url }} style={styles.img} resizeMode="contain" /> : null}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text variant="h2">Test Image</Text>
+      <View style={styles.imageWrap}>
+        {url ? (
+          <Image source={{ uri: url }} style={styles.image} resizeMode="contain" />
+        ) : (
+          <Text>No URL provided</Text>
+        )}
+      </View>
+    </SafeAreaView>
   );
-}
+};
+
+export default TestImageScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
-  img: { width: width - 40, height: width - 40 },
+  container: { flex: 1, padding: 12 },
+  imageWrap: { flex: 1, marginTop: 20, alignItems: 'center', justifyContent: 'center' },
+  image: { width: width - 40, height: width - 40 },
 });
