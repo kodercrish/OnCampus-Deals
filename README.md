@@ -1,146 +1,214 @@
 # OnCampus-Deals
 
-**GitHub Repository:** [https://github.com/kodercrish/OnCampus-Deals](OnCampus-Deals)
+**GitHub Repository:** [kodercrish/OnCampus-Deals](https://github.com/kodercrish/OnCampus-Deals)
 
 ## Project Overview
 
-**OnCampus Deals** is a robust, microservices-based marketplace application tailored for university campuses. It provides a secure and convenient platform for students to buy, sell, and trade items with their peers. The project enables communication among users, robust listing of items and easy discovery of items.
-
----
-
-## 🏗️ Architecture
-
-The project follows a modern decoupled/microservice architecture with a Spring Boot Microservices backend and a React Native frontend.
-
-### Backend (Microservices)
-The backend is built using **Java 21** and **Spring Boot 3.5.7**, organized into distinct services to ensure scalability and maintainability.
-
-| Service | Directory | Description |
-| :--- | :--- | :--- |
-| **ApiGateway** | `backend/ApiGateway` | The single entry point for all client requests. Handles jwt authentication and routing to internal microservices using **Spring Cloud Gateway**. |
-| **Identity Service** | `backend/Identity` | Manages user registration, authentication, and security using **JWT (JSON Web Tokens)**. |
-| **Listing Service** | `backend/Listing` | Handles the core marketplace logic: creating, editing, fetching, and deleting product listings. Integrates with **Cloudinary** for image storage. |
-| **Search Service** | `backend/Search` | Provides advanced search and filtering capabilities (by keyword, category, price range). |
-| **Chat Service** | `backend/Chat` | Facilitates messaging between buyers and sellers. |
-
-**Backend Tech Stack:**
-*   **Language:** Java 21
-*   **Framework:** Spring Boot 3.5.7, Spring Cloud
-*   **Database:** MySQL (Production), H2 (Testing)
-*   **Security:** Spring Security, JWT
-*   **Build Tool:** Gradlew
-
-### Frontend (Mobile Application)
-The frontend is a cross-platform mobile application built with **React Native** and **Expo**.
-
-**Frontend Tech Stack:**
-*   **Framework:** React Native (Expo SDK 54)
-*   **Language:** TypeScript
-*   **State Management:** Redux Toolkit
-*   **Data Fetching:** RTK Query
-*   **Navigation:** React Navigation (Native Stack & Bottom Tabs)
+**OnCampus Deals** is a microservices-based marketplace application tailored for university campuses. It gives students a secure and convenient platform to buy, sell, and trade items with their peers, with in-app chat, listing management, and fast item discovery.
 
 ---
 
 ## 🚀 Features
 
-*   **User Authentication**: Secure Signup and Login functionality to verify user identities.
+*   **User Authentication**: Secure signup and login with JWT-based sessions.
 *   **Browse Feed**: A dynamic feed displaying active listings from across the campus.
-*   **Advanced Search**: Filter items by category, price, or search by keywords to find specific deals.
-*   **Create Listings**: Sellers can easily post items with titles, descriptions, prices, and images.
-*   **listings Management**: Add listings, and mark items as "Sold" or "Unavailable".
-*   **Chat**: Integrated chat feature allows buyers to contact sellers directly within the app.
+*   **Advanced Search**: Filter items by category or price range, or search by keyword.
+*   **Create Listings**: Sellers can post items with titles, descriptions, prices, and images (stored on Cloudinary).
+*   **Listing Management**: Edit or delete your listings and mark items as "Sold" or "Unavailable".
+*   **Chat**: Buyers can message sellers directly within the app.
+*   **Admin Moderation**: Admins can view all listings, delete listings, and mark them unavailable.
+
+---
+
+## 🏗️ Architecture
+
+The project follows a decoupled microservice architecture: a Spring Boot backend behind an API gateway, and a React Native (Expo) mobile frontend.
+
+```mermaid
+flowchart LR
+    App["📱 React Native App<br/>(Expo Go)"] -->|HTTP /api/**| GW["ApiGateway :8080<br/>JWT validation + routing"]
+    GW --> ID["identity :8081"]
+    GW --> LS["Listing :8082"]
+    GW --> CH["Chat :8083"]
+    GW --> SR["Search :8084"]
+    GW --> AD["Admin :8085"]
+    ID --> DB1[("OCD_identity_db")]
+    LS --> DB2[("OCD_listing_db")]
+    SR -. read-only .-> DB2
+    AD --> DB2
+    CH --> DB3[("OCD_chat_db")]
+    LS --> CL["☁️ Cloudinary<br/>(images)"]
+```
+
+### Backend (Microservices)
+
+| Service | Directory | Port | Gateway route | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **ApiGateway** | `backend/ApiGateway` | 8080 | — | Single entry point for all client requests. Validates JWTs and routes to internal services using **Spring Cloud Gateway**. |
+| **Identity Service** | `backend/identity` | 8081 | `/api/auth/**` (public) | User registration, login, and JWT issuance. |
+| **Listing Service** | `backend/Listing` | 8082 | `/api/listing/**` (JWT) | Core marketplace logic: creating, editing, fetching, and deleting listings. Integrates with **Cloudinary** for images. |
+| **Chat Service** | `backend/Chat` | 8083 | `/api/chat/**` (JWT) | Messaging between buyers and sellers. |
+| **Search Service** | `backend/Search` | 8084 | `/api/search/**` (JWT) | Search and filtering by keyword, category, and price range. |
+| **Admin Service** | `backend/Admin` | 8085 | `/api/admin/**` (JWT) | Moderation: fetch all listings, delete listings, mark listings unavailable. |
+
+### Tech Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Backend** | Java 21, Spring Boot 3.5.7, Spring Cloud 2025.0.0 (Gateway), Spring Security, Spring Data JPA, jjwt 0.11.5, Cloudinary Java SDK |
+| **Database** | MySQL |
+| **Build** | Gradle wrapper 8.14.3 (per service) |
+| **Frontend** | React Native 0.81, React 19.1, Expo SDK 54, TypeScript |
+| **State / Data** | Redux Toolkit, RTK Query |
+| **Navigation** | React Navigation (Native Stack & Bottom Tabs) |
+
 ---
 
 ## 🛠️ Setup Instructions
 
 ### Prerequisites
-1.  **Java Development Kit (JDK) 21**
-2.  **Node.js** (LTS version recommended) and **npm**
-3.  **MySQL Server** (running locally)
-4.  **Expo CLI** (`npm install -g expo-cli`)
-5.  **Expo Go mobile app** (install from playstore)
 
-### Backend Setup
+1.  **JDK 21**
+2.  **Node.js** (LTS) and **npm**
+3.  **MySQL Server** running locally
+4.  A **Cloudinary** account (for listing images)
+5.  **Expo Go** app on your phone (Android or iOS, supporting SDK 54). Your phone and computer must be on the **same Wi-Fi network**.
 
-1.  **Configure Database**:
-    *   Ensure your MySQL server is running.
-    *   Create a total of three databases (case sensitive) : **OCD_identity_db**, **OCD_listing_db** and **OCD_chat_db**
-2.  **Environment Variables**:
-    *   Check `src/main/resources/application-example.properties` in each service (Identity, Listing, etc.).
-    *   Update database credentials (`spring.datasource.username`, `spring.datasource.password`).
-    *   For the **Listing Service**, ensure you have your Cloudinary credentials configured.
-3.  **Run Services**:
-    *   One method is to open separate terminals for each service you want to start. Navigate to the service directory and run:
+### 1. Find Your LAN IP
 
-    ```bash
-    # Example for Identity Service
-    cd backend/identity
-    ./gradlew bootRun
-    ```
+The phone reaches the backend over your local network, so `localhost` will not work from the device. Find your computer's LAN IP (e.g. `192.168.1.20`):
 
-    *Repeat for Listing, Search, Chat, and finally __ApiGateway__.*
+```bash
+# Linux
+hostname -I
+# macOS
+ipconfig getifaddr en0
+# Windows
+ipconfig
+```
 
-    ##### OR
+You can also run the frontend once (`npm start`) and read the IP shown in the Expo output.
 
-    *   Second method (Recommended) is to run the shell script from the root directory by running the command :
+### 2. Create the Databases
 
-    ```bash
-    # make the file executable
-    chmod +x start-all.sh
+```sql
+CREATE DATABASE IF NOT EXISTS OCD_identity_db;
+CREATE DATABASE IF NOT EXISTS OCD_listing_db;
+CREATE DATABASE IF NOT EXISTS OCD_chat_db;
+```
 
-    # Start all servers
-    ./start-all.sh
-    ```
+*   Database names are case sensitive.
+*   `identity` also uses `createDatabaseIfNotExist=true`, so its database is created automatically if missing.
+*   **Search** and **Admin** share `OCD_listing_db` with `ddl-auto=none`, so they never create tables. Start the **Listing** service at least once first so it creates the schema.
 
-    After running the application, make sure you close all the servers either by killing all the processes by "kill -9 [PID]" or by running the below shell script:
+### 3. Configure the Backend
 
-    ```bash
-    # make the file executable
-    chmod +x stop-all.sh
+`application.properties` is gitignored. In **each of the 6 services**, copy the example file and fill it in:
 
-    # close all servers
-    ./stop-all.sh
-    ```
+```bash
+for s in Admin ApiGateway Chat identity Listing Search; do
+  cp backend/$s/src/main/resources/application-example.properties \
+     backend/$s/src/main/resources/application.properties
+done
+```
 
-    *   You can view the logs of each microservice inside the logs folder created in the root directory
+Then set the required keys (placeholders shown, never commit real values):
 
-### Frontend Setup
+| Service | Key(s) | Notes |
+| :--- | :--- | :--- |
+| All except ApiGateway | `spring.datasource.username`, `spring.datasource.password` | Your MySQL credentials. |
+| ApiGateway | `jwt.secret=<your-secret>` | Must be **identical** to identity's `app.secret.key`, at least 32 bytes. |
+| ApiGateway | `spring.cloud.gateway.routes[*].uri` | Replace every `[write your device specific url here]` with `localhost` or your LAN IP. |
+| identity | `app.secret.key=<your-secret>` | Same value as `jwt.secret`, at least 32 bytes. |
+| identity | `app.jwt.expiration` | Optional. Token lifetime in ms (default in example: 7 days). |
+| Listing | `cloudinary.cloud_name`, `cloudinary.api_key`, `cloudinary.api_secret` | From your Cloudinary dashboard. |
 
-1.  **Navigate to Frontend**:
-    ```bash
-    cd frontend
-    ```
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Configure API Endpoint**:
-    *   Ensure the `API_BASE` in your env points to your running ApiGateway (e.g., `http://localhost:8080`, or in our case you will have to use a shared ip with your mobile).
-4.  **Start the App**:
-    *   Ensure that the port starts on port 8086 (as we have wrote the application.properties according to that in the backend)
-    ```bash
-    npx expo start --port 8086
-    ```
-5.  **Run on Device**:
-    *   Scan the QR code displayed on the terminal after running the frontend from the Expo Go app downloaded in you mobile phone
-    *   The shared ip will also be visible so you can update the backend application properties and also the frontend env to use that url for shared servers
+### 4. Run the Backend
 
+**Recommended:** from the repository root, start all 6 backend services:
 
-### Testing
+```bash
+./start-all.sh
+```
 
-1.  **Testing files**:
-    *   Unit testing and Integration testing files are located inside the test folder inside src in each microservice
-    *   You can manually run all the tests by running the below code in each microservice :
-    ```bash
-    ./gradlew clean test
-    ```
-    #### Or
-    *   You can run all the test cases at once by running the below shell script and you cna view the test logs in the **test_logs folder** created after execution of below code:
-    ```bash
-    # Make the file executable
-    chmod +x run-all-tests.sh
+*   Starts Admin, ApiGateway, Chat, identity, Listing, and Search in the background (the frontend is started separately).
+*   Logs go to `logs/<Service>.log`; PIDs are saved to `service_pids.txt`.
 
-    # Run all tests
-    ./run-all-tests.sh
-    ```
+Stop everything with:
+
+```bash
+./stop-all.sh
+```
+
+This stops each PID in `service_pids.txt` and deletes the file. If services are still running (e.g. the PID file is missing), check what is listening on ports 8080–8085 (`lsof -i :8080-8085`) or use `pkill -f 'java|expo'` as a fallback.
+
+**OR**
+
+Run each service manually in its own terminal:
+
+```bash
+cd backend/Listing
+./gradlew bootRun
+```
+
+Repeat for `identity`, `Chat`, `Search`, `Admin`, and finally `ApiGateway`. (Run Listing before Search and Admin on first setup.)
+
+### 5. Run the Frontend
+
+```bash
+cd frontend
+cp .env.example .env
+```
+
+Edit `.env` so `API_BASE` points to the gateway on your LAN IP, including the `/api` suffix:
+
+```env
+API_BASE=http://<LAN-IP>:8080/api
+```
+
+Then install and start:
+
+```bash
+npm install
+npm start      # runs expo start on port 8086
+```
+
+Scan the QR code in the terminal with **Expo Go** on your phone.
+
+---
+
+## 🧪 Testing
+
+Unit and integration tests live in `src/test` of each service. The controller tests run with `spring.profiles.active=test`, but `application-test.properties` is **not committed**. Before running tests, create `src/test/resources/application-test.properties` in each service that needs it, providing:
+
+*   a test datasource (e.g. an H2 in-memory database for services that include H2 as a test dependency, or a separate MySQL test database),
+*   any secrets the service reads (e.g. `app.secret.key` for identity, `jwt.secret` for ApiGateway, dummy `cloudinary.*` values for Listing).
+
+Run tests for one service:
+
+```bash
+cd backend/<Service>
+./gradlew clean test
+```
+
+**OR**
+
+Run all services' tests from the root:
+
+```bash
+./run-all-tests.sh
+```
+
+Tests run in the background; follow progress in `test_logs/<Service>_test.log` (e.g. `tail -f test_logs/Listing_test.log`).
+
+---
+
+## ⚠️ Known Limitations
+
+*   Admin routes (`/api/admin/**`) are JWT-protected at the gateway but **not yet role-checked**, so any authenticated user can currently call them.
+
+---
+
+## 📄 License
+
+Not specified.
